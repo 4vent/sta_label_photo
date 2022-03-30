@@ -1,7 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "c:/users/kent/appdata/roaming/python/python38/site-packages",
-        "D:\\Users\\kent\\Programing\\Python\\_Pythonista\\site-packages",
-        "D:\\Users\\kent\\Programing\\Python\\_Pythonista\\mkYoloLabel\\modules"
-    ]
-}
