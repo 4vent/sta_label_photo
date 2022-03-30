@@ -1,0 +1,441 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{0, 0}, {512, 512}}",
+        "class" : "ImageView",
+        "attributes" : {
+          "custom_attributes" : "",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "flex" : "WH",
+          "class" : "ImageView",
+          "name" : "Image",
+          "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{0, 0}, {512, 512}}",
+        "class" : "View",
+        "attributes" : {
+          "flex" : "WH",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "class" : "View",
+          "name" : "ancor_guide_layer",
+          "uuid" : "23EB8EAB-5EBA-4F5A-BFD1-4BF3FDB28EAC"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{-212, 0}, {204, 204}}",
+        "class" : "View",
+        "attributes" : {
+          "flex" : "",
+          "border_width" : 2,
+          "alpha" : 1,
+          "frame" : "{{206, 206}, {100, 100}}",
+          "class" : "View",
+          "uuid" : "4487682B-450A-49C4-BDEC-A15C1D2CC51F",
+          "corner_radius" : 0,
+          "border_color" : "RGBA(0.000000,1.000000,0.000000,1.000000)",
+          "name" : "guidBox"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{0, 0}, {512, 512}}",
+        "class" : "View",
+        "attributes" : {
+          "alpha" : 0.5,
+          "flex" : "WH",
+          "custom_class" : "touchView",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "class" : "View",
+          "uuid" : "A28885BA-2BD2-4E0F-88EA-AB0DE17374B4",
+          "name" : "touch_panel"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 458}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:checkmark_round_32",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "custom_attributes" : "",
+          "title" : "",
+          "action" : "onButtonDone",
+          "class" : "Button",
+          "name" : "button_done",
+          "flex" : "RT"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{224, 450}, {64, 56}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_create",
+          "font_size" : 30,
+          "corner_radius" : 24,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonCreate",
+          "class" : "Button",
+          "image_name" : "iob:plus_round_32",
+          "flex" : "LRT"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{402, 458}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_delete",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonDelete",
+          "class" : "Button",
+          "image_name" : "iob:load_d_32",
+          "flex" : "LT"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{94, -42}, {324, 34}}",
+        "class" : "Slider",
+        "attributes" : {
+          "action" : "onSliderZoom",
+          "flex" : "WB",
+          "frame" : "{{156, 239}, {200, 34}}",
+          "uuid" : "7F09310C-B017-47F4-BAE9-1DA516143236",
+          "class" : "Slider",
+          "value" : 0,
+          "name" : "slider_zoom"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{455, 520}, {51, 31}}",
+        "class" : "Switch",
+        "attributes" : {
+          "action" : "onSwitchShowAncorGuid",
+          "flex" : "LT",
+          "frame" : "{{231, 241}, {51, 31}}",
+          "class" : "Switch",
+          "uuid" : "6207148C-82D0-46D3-B9EC-40816846680E",
+          "value" : false,
+          "name" : "show_ancor_guid_switch"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{426, 62}, {80, 32}}",
+        "class" : "Label",
+        "attributes" : {
+          "uuid" : "3F6841FF-3847-455F-BBE1-8A63673D664A",
+          "font_size" : 18,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+          "frame" : "{{181, 240}, {150, 32}}",
+          "border_width" : 0,
+          "alignment" : "center",
+          "text" : "---\/---",
+          "font_name" : "<System>",
+          "class" : "Label",
+          "name" : "progress_label",
+          "flex" : "LB"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 62}, {412, 32}}",
+        "class" : "Label",
+        "attributes" : {
+          "flex" : "WB",
+          "name" : "holizontal_slide_bar_view",
+          "frame" : "{{181, 240}, {150, 32}}",
+          "uuid" : "88BD581D-EEB2-4370-9A7A-F90EAC88BEBD",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "Label",
+          "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{474, 102}, {32, 348}}",
+        "class" : "Label",
+        "attributes" : {
+          "flex" : "HL",
+          "font_size" : 18,
+          "frame" : "{{181, 240}, {150, 32}}",
+          "uuid" : "4A1EF183-BF38-4F32-8547-6216C0303181",
+          "class" : "Label",
+          "alignment" : "left",
+          "text" : "Label",
+          "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+          "name" : "vertical_slide_bar_view",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{174, 20}, {276, 34}}",
+        "class" : "Slider",
+        "attributes" : {
+          "action" : "onBrightnessSlider",
+          "flex" : "LB",
+          "frame" : "{{156, 239}, {200, 34}}",
+          "uuid" : "C16FCEFE-2D7B-4DF8-A928-E9AFB958113B",
+          "class" : "Slider",
+          "value" : 0,
+          "name" : "brightness_slider"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{62, 20}, {104, 34}}",
+        "class" : "Slider",
+        "attributes" : {
+          "action" : "onSaturationSlider",
+          "flex" : "RB",
+          "frame" : "{{156, 239}, {200, 34}}",
+          "uuid" : "C16FCEFE-2D7B-4DF8-A928-E9AFB958113B",
+          "class" : "Slider",
+          "value" : 0,
+          "name" : "saturation_slider"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{458, 458}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:refresh_32",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "custom_attributes" : "",
+          "title" : "",
+          "action" : "onButtonChangeSelect",
+          "class" : "Button",
+          "name" : "button_change_select",
+          "flex" : "LT"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+          {
+            "nodes" : [
+
+            ],
+            "frame" : "{{0, 0}, {512, 512}}",
+            "class" : "Label",
+            "attributes" : {
+              "flex" : "WH",
+              "name" : "label1",
+              "text_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+              "frame" : "{{181, 240}, {150, 32}}",
+              "uuid" : "73DB639D-5CDC-4223-B2B0-F7BFA260334B",
+              "class" : "Label",
+              "alignment" : "center",
+              "text" : "Vent App",
+              "font_size" : 100,
+              "font_name" : "<System-Bold>"
+            },
+            "selected" : false
+          }
+        ],
+        "frame" : "{{520, 520}, {512, 512}}",
+        "class" : "View",
+        "attributes" : {
+          "flex" : "WH",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "background_color" : "RGBA(0.433593,0.805243,0.433593,1.000000)",
+          "class" : "View",
+          "name" : "curtain",
+          "uuid" : "622B69F6-B26D-4582-819C-480C8949B821"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{62, 458}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_chose_label",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonChooseLabel",
+          "class" : "Button",
+          "image_name" : "iob:pricetag_32",
+          "flex" : "RT"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 6}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_exit",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonExit",
+          "class" : "Button",
+          "image_name" : "iob:close_round_32",
+          "flex" : "RB"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{512, 0}, {256, 512}}",
+        "class" : "View",
+        "attributes" : {
+          "flex" : "HL",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "class" : "View",
+          "name" : "menu_view",
+          "uuid" : "79148F7A-17E8-46EF-A342-6ADCB26BA062"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{458, 6}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:navicon_round_32",
+          "flex" : "LB",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonMenu",
+          "class" : "Button",
+          "name" : "button_menu",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{-56, 212}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "flex" : "RB",
+          "border_width" : 0,
+          "action" : "onButtonTest",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "title" : "TEST",
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "class" : "Button",
+          "name" : "button_test",
+          "font_size" : 15
+        },
+        "selected" : true
+      }
+    ],
+    "frame" : "{{0, 0}, {512, 512}}",
+    "class" : "View",
+    "attributes" : {
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "enabled" : true,
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "name" : "",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]

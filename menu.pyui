@@ -1,0 +1,186 @@
+[
+  {
+    "nodes" : [
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 458}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:close_round_24",
+          "flex" : "WT",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "Exit",
+          "action" : "onButtonExit",
+          "font_bold" : true,
+          "class" : "Button",
+          "name" : "button_exit",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 62}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:pricetags_24",
+          "flex" : "WB",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "Edit Labels",
+          "action" : "onButtonEditClasses",
+          "class" : "Button",
+          "name" : "button_edit_classes",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 174}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:ios7_trash_24",
+          "flex" : "WB",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "Delete Photo",
+          "action" : "onButtonDelPhoto",
+          "class" : "Button",
+          "name" : "button_delphoto",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 402}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "image_name" : "iob:images_24",
+          "flex" : "WT",
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "Open Image",
+          "action" : "onButtonSelect",
+          "class" : "Button",
+          "name" : "button_select",
+          "font_size" : 15
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 118}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_back",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "custom_attributes" : "",
+          "title" : "Previous Photo",
+          "action" : "onButtonBack",
+          "class" : "Button",
+          "image_name" : "iob:arrow_return_left_24",
+          "flex" : "WB"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 230}, {500, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_theme",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "Change Color",
+          "action" : "onButtonTheme",
+          "class" : "Button",
+          "image_name" : "iob:contrast_24",
+          "flex" : "WB"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 286}, {51, 31}}",
+        "class" : "Switch",
+        "attributes" : {
+          "flex" : "RB",
+          "action" : "onSwitchZoomModw",
+          "frame" : "{{231, 241}, {51, 31}}",
+          "class" : "Switch",
+          "uuid" : "CC27D6FC-5154-4470-A4B2-485A75879A58",
+          "value" : false,
+          "name" : "switch_zoom_mode"
+        },
+        "selected" : true
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{65, 286}, {441, 32}}",
+        "class" : "Label",
+        "attributes" : {
+          "font_size" : 18,
+          "flex" : "WLB",
+          "frame" : "{{181, 240}, {150, 32}}",
+          "uuid" : "E14DCAD4-32F9-4ABB-97E0-E955E1132D24",
+          "class" : "Label",
+          "alignment" : "center",
+          "text" : "Zoom Mode",
+          "name" : "switch_zoom_mode_label",
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      }
+    ],
+    "frame" : "{{0, 0}, {512, 512}}",
+    "class" : "View",
+    "attributes" : {
+      "enabled" : true,
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "flex" : ""
+    },
+    "selected" : false
+  }
+]
