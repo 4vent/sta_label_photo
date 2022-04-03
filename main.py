@@ -59,6 +59,8 @@ lastSliderValue = 0
 pinchBeganDistance = 0.0
 zoom_mode = True
 
+showingImage = 
+
 vrt_hitbox = ui.Path
 hlz_hitbox = ui.Path
 
@@ -211,6 +213,7 @@ def moveAncor(touch):
     global touchBeganPos
     global selectedAncor
     dpos = [b-a for (a, b) in zip(touchBeganPos, touch.location)]
+    
     if selectedAncor in ['tl', 'tr', 'tm']:
         selectedBox.y = boxData['absy'] + min(dpos[1], boxData['h'])
         selectedBox.height = max(boxData['h'] - dpos[1], 1)
@@ -225,7 +228,7 @@ def moveAncor(touch):
         selectedBox.y = boxData['absy'] + dpos[1]
         selectedBox.x = boxData['absx'] + dpos[0]
     
-    doZoomGlass(touch.location, 'photoPos', 'photoScale', 'rawPhoto')
+    doZoomGlass(touch.location, 'photoPos', 'photoScale')
 
 def getNearestAncor(touch):
     global boxCount
@@ -399,6 +402,7 @@ class touchView(ui.View):
         lastTouchTimestamp = touch.timestamp
         if getNearestAncor(touch):
             isAncorEditing = True
+            showZoomGlass()
             global isEdited
             isEdited = True
         else:
@@ -463,6 +467,7 @@ class touchView(ui.View):
         doubleTouchFlag = False
         selectedAncor = None
         showAncorGuid()
+        hideZoomGlass()
         
         global hittingSlideBarView
         global slideBarView
@@ -771,14 +776,18 @@ def closeMenue():
 ### Zoom glass functions ###
 ### -------------------- ###
 
-def showZoonGlass():
-    pass
+def showZoomGlass():
+    global v
+    v['glass_image_view'].alpha = 1
     
 def hideZoomGlass():
-    pass
-
-def doZoomGlass(touchPos, photoPos, photoScale, rawPhoto):
     global v
+    v['glass_image_view'].alpha = 0
+
+def doZoomGlass(touchPos, photoPos, photoScale):
+    global v
+    global photoNum
+    global assets
     
     if touchPos[0] > v['touch_panel'].width / 2:
         v['glass_image_view'].x = 0
@@ -789,6 +798,11 @@ def doZoomGlass(touchPos, photoPos, photoScale, rawPhoto):
         v['glass_image_view'].y = 0
     else:
         v['glass_image_view'].y = v['touch_panel'].height - v['glass_image_view'].height
+        
+    assets[photoNum].get_image() as img:
+        data = 'io.BytesIO'
+        img.save(data, 'JPEG')
+        v['glass_image_view'].image = ui.Image.from_data(data)
     
     
 
@@ -922,13 +936,15 @@ def openImage():
     global photoNum
     global assets
     global centerPos
+    global showingImage
     global v
     
     v['slider_zoom'].value = 0
     imageZoomBySliderValue(centerPos)
     v['Image'].center = centerPos
     clearAllBox()
-    v['Image'].image = assets[photoNum].get_ui_image()
+    showingImage = assets[photoNum].get_ui_image()
+    v['Image'].image = showingImage
     with open('lastedited.json', 'r') as f:
         lastedited = json.load(f)
         lastedited['assetid'] = assets[photoNum].local_id
