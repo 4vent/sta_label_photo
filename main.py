@@ -224,6 +224,8 @@ def moveAncor(touch):
     if selectedAncor in ['center']:
         selectedBox.y = boxData['absy'] + dpos[1]
         selectedBox.x = boxData['absx'] + dpos[0]
+    
+    doZoomGlass(touch.location, 'photoPos', 'photoScale', 'rawPhoto')
 
 def getNearestAncor(touch):
     global boxCount
@@ -765,7 +767,31 @@ def closeMenue():
     
     menu_state = False
     
+### -------------------- ###
+### Zoom glass functions ###
+### -------------------- ###
+
+def showZoonGlass():
+    pass
     
+def hideZoomGlass():
+    pass
+
+def doZoomGlass(touchPos, photoPos, photoScale, rawPhoto):
+    global v
+    
+    if touchPos[0] > v['touch_panel'].width / 2:
+        v['glass_image_view'].x = 0
+    else:
+        v['glass_image_view'].x = v['touch_panel'].width - v['glass_image_view'].width
+    
+    if touchPos[1] > v['touch_panel'].height / 2:
+        v['glass_image_view'].y = 0
+    else:
+        v['glass_image_view'].y = v['touch_panel'].height - v['glass_image_view'].height
+    
+    
+
 ### --------------------------------- ###
 ### Read and Write and Draw Functions ###
 ### --------------------------------- ###

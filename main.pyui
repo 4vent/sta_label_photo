@@ -423,16 +423,31 @@
           "name" : "button_test",
           "font_size" : 15
         },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{-208, 312}, {200, 200}}",
+        "class" : "ImageView",
+        "attributes" : {
+          "frame" : "{{206, 206}, {100, 100}}",
+          "image_name" : "iob:bag_256",
+          "class" : "ImageView",
+          "name" : "glass_image_view",
+          "uuid" : "E7D930CA-0E8F-4F80-BEEA-0210A5035122"
+        },
         "selected" : true
       }
     ],
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "enabled" : true,
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "enabled" : true,
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "name" : "",
       "flex" : ""
     },
