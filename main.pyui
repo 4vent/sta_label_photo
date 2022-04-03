@@ -8,11 +8,11 @@
         "frame" : "{{0, 0}, {512, 512}}",
         "class" : "ImageView",
         "attributes" : {
-          "custom_attributes" : "",
+          "class" : "ImageView",
           "frame" : "{{206, 206}, {100, 100}}",
           "flex" : "WH",
-          "class" : "ImageView",
           "name" : "Image",
+          "custom_attributes" : "",
           "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB"
         },
         "selected" : false
@@ -199,14 +199,14 @@
         "class" : "Label",
         "attributes" : {
           "flex" : "WB",
-          "name" : "holizontal_slide_bar_view",
+          "font_size" : 18,
           "frame" : "{{181, 240}, {150, 32}}",
           "uuid" : "88BD581D-EEB2-4370-9A7A-F90EAC88BEBD",
           "class" : "Label",
           "alignment" : "left",
           "text" : "Label",
           "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-          "font_size" : 18,
+          "name" : "holizontal_slide_bar_view",
           "font_name" : "<System>"
         },
         "selected" : false
@@ -219,14 +219,14 @@
         "class" : "Label",
         "attributes" : {
           "flex" : "HL",
-          "font_size" : 18,
+          "name" : "vertical_slide_bar_view",
           "frame" : "{{181, 240}, {150, 32}}",
           "uuid" : "4A1EF183-BF38-4F32-8547-6216C0303181",
           "class" : "Label",
           "alignment" : "left",
           "text" : "Label",
           "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-          "name" : "vertical_slide_bar_view",
+          "font_size" : 18,
           "font_name" : "<System>"
         },
         "selected" : false
@@ -433,7 +433,7 @@
         "class" : "ImageView",
         "attributes" : {
           "frame" : "{{206, 206}, {100, 100}}",
-          "image_name" : "iob:bag_256",
+          "alpha" : 0,
           "class" : "ImageView",
           "name" : "glass_image_view",
           "uuid" : "E7D930CA-0E8F-4F80-BEEA-0210A5035122"
@@ -444,11 +444,11 @@
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "name" : "",
       "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
-      "name" : "",
       "flex" : ""
     },
     "selected" : false
