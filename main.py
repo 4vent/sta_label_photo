@@ -59,7 +59,7 @@ lastSliderValue = 0
 pinchBeganDistance = 0.0
 zoom_mode = True
 
-showingImage = 
+showingImage = ui.Image()
 
 vrt_hitbox = ui.Path
 hlz_hitbox = ui.Path
@@ -784,10 +784,11 @@ def hideZoomGlass():
     global v
     v['glass_image_view'].alpha = 0
 
-def doZoomGlass(touchPos, photoPos, photoScale):
+def doZoomGlass(touchPos, centerPos, photoPos, photoScale):
     global v
     global photoNum
     global assets
+    global showingImage
     
     if touchPos[0] > v['touch_panel'].width / 2:
         v['glass_image_view'].x = 0
@@ -798,12 +799,11 @@ def doZoomGlass(touchPos, photoPos, photoScale):
         v['glass_image_view'].y = 0
     else:
         v['glass_image_view'].y = v['touch_panel'].height - v['glass_image_view'].height
-        
-    assets[photoNum].get_image() as img:
-        data = 'io.BytesIO'
-        img.save(data, 'JPEG')
-        v['glass_image_view'].image = ui.Image.from_data(data)
     
+    w = v['glass_image_view'].width
+    h = v['glass_image_view'].height
+    with ui.ImageContext(w, h) as ctx:
+        showingImage.draw()
     
 
 ### --------------------------------- ###
