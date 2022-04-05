@@ -28,6 +28,40 @@ from pythonista_ui_tools import createOneColorImage
 themeColors = config.theme_colors
 ancorGuideNames = config.ancore_guid_names
 
+### ------- ###
+### classes ###
+### ------- ###
+
+class labelClass():
+    def __init__(self, title, bgcolor, textcolor):
+        self.title = title
+        self.bgcolor = bgcolor
+        self.textcolor = textcolor
+
+class tranceform():
+    def __init__(self, x=None, y=None, width=None, height=None):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+### ------- ###
+### Utility ###
+### ------- ###
+
+def convertImageViewPos2PhotoPos(view_width, view_height, im_width, im_height, pos_on_view_x, pos_on_view_y):
+    if im_width * (float(view_height) / im_height) < view_width:
+        scale = float(view_height) / im_height
+    else:
+        scale = float(view_width) / im_width
+    width_margin = (view_width - im_width * scale) / 2
+    height_margin = (view_height - im_height * scale) / 2
+    
+    pos_on_photo_x = (pos_on_view_x - width_margin) / scale
+    pos_on_photo_y = (pos_on_view_y - height_margin) / scale
+    
+    return tranceform(x=pos_on_photo_x, y=pos_on_photo_y)
+
 ### ------------- ###
 ### Global Values ###
 ### ------------- ###
@@ -59,7 +93,7 @@ lastSliderValue = 0
 pinchBeganDistance = 0.0
 zoom_mode = True
 
-showingImage = ui.Image()
+showingImage = ui.Image.named('showingImage')
 
 vrt_hitbox = ui.Path
 hlz_hitbox = ui.Path
@@ -83,16 +117,6 @@ trueLastTouchLocation = (0,0)
 
 menu_state = False
 nowThemeNum = 0
-
-### ------- ###
-### classes ###
-### ------- ###
-
-class labelClass():
-    def __init__(self, title, bgcolor, textcolor):
-        self.title = title
-        self.bgcolor = bgcolor
-        self.textcolor = textcolor
 
 ### ---------------------------------------- ###
 ### Standalone Tools (but use global values) ###
@@ -208,10 +232,39 @@ def setAncorValue(box):
     updateAncorGuid()
     # print(boxData)
 
+def getSelectedAncorPos():
+    global selectedAncor
+    global selectedBox
+    if 't' in selectedAncor:
+        selectedAncorPosY = selectedBox.y
+    elif 'b' in selectedAncor:
+        selectedAncorPosY = selectedBox.y + selectedBox.height
+    else:
+        selectedAncorPosY = selectedBox.y + selectedBox.height / 2
+    if 'l' in selectedAncor:
+        selectedAncorPosX = selectedBox.x
+    elif 'r' in selectedAncor:
+        selectedAncorPosX = selectedBox.x + selectedBox.width
+    else:
+        selectedAncorPosX = selectedBox.x + selectedBox.width / 2
+    
+    global v
+    global showingImage
+    imView = v['Image']
+    return convertImageViewPos2PhotoPos(
+        imView.width,
+        imView.height,
+        showingImage.size[0],
+        showingImage.size[1],
+        selectedAncorPosX,
+        selectedAncorPosY
+        )
+
 def moveAncor(touch):
     global boxData
     global touchBeganPos
     global selectedAncor
+    global selectedBox
     dpos = [b-a for (a, b) in zip(touchBeganPos, touch.location)]
     
     if selectedAncor in ['tl', 'tr', 'tm']:
@@ -227,8 +280,11 @@ def moveAncor(touch):
     if selectedAncor in ['center']:
         selectedBox.y = boxData['absy'] + dpos[1]
         selectedBox.x = boxData['absx'] + dpos[0]
-    
-    doZoomGlass(touch.location, 'photoPos', 'photoScale')
+        
+    selectedAncorPos_on_photo = getSelectedAncorPos()
+        
+    global lastScale
+    doZoomGlass(touch.location, selectedAncorPos_on_photo, lastScale)
 
 def getNearestAncor(touch):
     global boxCount
@@ -402,7 +458,10 @@ class touchView(ui.View):
         lastTouchTimestamp = touch.timestamp
         if getNearestAncor(touch):
             isAncorEditing = True
-            showZoomGlass()
+            
+            global lastScale
+            centerPos_on_photo = getSelectedAncorPos()
+            showZoomGlass(touch.location, centerPos_on_photo, lastScale)
             global isEdited
             isEdited = True
         else:
@@ -521,7 +580,7 @@ def setLastZoomScale():
     global lastSliderValue
     lastSliderValue = v['slider_zoom'].value
 
-def imageZoom(zoomCenter, scale, isUpdateSlider=False):
+def imageZoom(zoomCenter, scale, disableUpdateSlider=False):
     global v
     global initialImageScale
     global lastScale
@@ -542,12 +601,12 @@ def imageZoom(zoomCenter, scale, isUpdateSlider=False):
         global selectedBox
         setAncorValue(selectedBox)
         
-    if isUpdateSlider:
+    if not disableUpdateSlider:
         v['slider_zoom'].value = Ease.inQuad_inverse(1, 16, scale)
 
 def imageZoomBySliderValue(zoomCenter):
     scale = Ease.inQuad(1, 16, v['slider_zoom'].value)
-    imageZoom(zoomCenter, scale)
+    imageZoom(zoomCenter, scale, disableUpdateSlider=True)
 
 def zoomWithDoubletouch(touch):
     global touchBeganPos
@@ -587,7 +646,7 @@ def pinch():
     center = getPinchCenterPos()
     pinchDistance = getPinchDistance()
     zoomRate = (pinchDistance / pinchBeganDistance)
-    imageZoom(center, trueLastScale * zoomRate, isUpdateSlider=True)
+    imageZoom(center, trueLastScale * zoomRate)
     #if zoomRate < 1:
     #    v['slider_zoom'].value = lastSliderValue - Ease.inQuad_inverse(1, 16, 1/zoomRate)
     #else:
@@ -776,35 +835,59 @@ def closeMenue():
 ### Zoom glass functions ###
 ### -------------------- ###
 
-def showZoomGlass():
+def initZoomGlass():
     global v
-    v['glass_image_view'].alpha = 1
+    glass = v['glass_image_view']
     
-def hideZoomGlass():
-    global v
-    v['glass_image_view'].alpha = 0
+    cross_v = ui.View(frame=(glass.width/2 - 0.5, 0, 1, glass.height))
+    cross_h = ui.View(frame=(0, glass.height/2 - 0.5, glass.width, 1))
+    cross_v.background_color, cross_h.background_color = 'red', 'red'
+        
+    glass.add_subview(cross_v)
+    glass.add_subview(cross_h)
+    glass.alpha = 0
+    glass.x = 0
+    glass.y = 0
 
-def doZoomGlass(touchPos, centerPos, photoPos, photoScale):
+def doZoomGlass(touchPos, centerPos_on_photo, photoScale): # center
     global v
     global photoNum
     global assets
     global showingImage
     
-    if touchPos[0] > v['touch_panel'].width / 2:
-        v['glass_image_view'].x = 0
-    else:
-        v['glass_image_view'].x = v['touch_panel'].width - v['glass_image_view'].width
+    glass = v['glass_image_view']
     
-    if touchPos[1] > v['touch_panel'].height / 2:
-        v['glass_image_view'].y = 0
-    else:
-        v['glass_image_view'].y = v['touch_panel'].height - v['glass_image_view'].height
+    if glass.x - 50 < touchPos.x < glass.x + glass.width + 50 and glass.y - 50 < touchPos.y < glass.y + glass.height + 50:
+        if touchPos[0] > v['touch_panel'].width / 2:
+            glass.x = 0
+        else:
+            glass.x = v['touch_panel'].width - glass.width
+        
+        if touchPos[1] > v['touch_panel'].height / 2:
+            glass.y = 0
+        else:
+            glass.y = v['touch_panel'].height - glass.height
     
-    w = v['glass_image_view'].width
-    h = v['glass_image_view'].height
-    with ui.ImageContext(w, h) as ctx:
-        showingImage.draw()
     
+    photo_size = showingImage.size
+    offset_x = glass.width / 2 - centerPos_on_photo.x * photoScale
+    offset_y = glass.height / 2 - centerPos_on_photo.y * photoScale
+    
+    # console.hud_alert(str(glass.width / 2 - centerPos_on_photo.x) + str(glass.height / 2 - centerPos_on_photo.y))
+    # console.hud_alert(str(centerPos_on_photo.x) + str(centerPos_on_photo.y))
+    with ui.ImageContext(glass.width, glass.height) as ctx:
+        ui.fill_rect(0, 0, 200, 200)
+        showingImage.draw(offset_x, offset_y, photo_size[0]*photoScale, photo_size[1]*photoScale)
+        glass.image = ctx.get_image()
+        
+def showZoomGlass(touchPos, centerPos_on_photo, photoScale):
+    global v
+    doZoomGlass(touchPos, centerPos_on_photo, photoScale)
+    v['glass_image_view'].alpha = 1
+    
+def hideZoomGlass():
+    global v
+    v['glass_image_view'].alpha = 0
 
 ### --------------------------------- ###
 ### Read and Write and Draw Functions ###
@@ -1239,6 +1322,8 @@ def start():
     def b():
         v.remove_subview(v['curtain'])
     ui.animate(a, completion=b)
+    
+    initZoomGlass()
     
 def main():
     global v
