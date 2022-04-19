@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# test commit from working copy
 
 import ui
 import photos
