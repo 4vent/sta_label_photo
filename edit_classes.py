@@ -6,6 +6,8 @@ import console
 
 from tableview_demo import tvDelegate
 
+path = ''
+
 class myTVDelegate(tvDelegate):
     def tableview_delete(self, tableview, section, row):
         
@@ -63,7 +65,8 @@ def init_title_bar_button():
     v.right_button_items = [add_button, edit_button]
 
 def get_label_list():
-    with open('result/classes.txt', 'r') as f:
+    global path
+    with open(path, 'r') as f:
         labelTitles = f.read().split()
     return labelTitles
 
@@ -99,12 +102,15 @@ def start():
 
 def save_items():
     global tv
+    global path
     items = tv.data_source.items
-    with open('result/classes.txt', 'w') as f:
+    with open(path, 'w') as f:
         f.write('\n'.join([i['title'] for i in items]))
 
-def choose_class_dialog():
+def choose_class_dialog(classes_path):
     global v
+    global path
+    path = classes_path
     v = create_main_view()
     awake()
     v.present('fullscreen')

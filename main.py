@@ -49,11 +49,17 @@ class tranceform():
 ### Utility ###
 ### ------- ###
 
-def convertImageViewPos2PhotoPos(view_width, view_height, im_width, im_height, pos_on_view_x, pos_on_view_y):
+def getFitImageScale(view_width, view_height, im_width, im_height):
     if im_width * (float(view_height) / im_height) < view_width:
         scale = float(view_height) / im_height
     else:
         scale = float(view_width) / im_width
+    
+    return scale
+
+def convertImageViewPos2PhotoPos(view_width, view_height, im_width, im_height, pos_on_view_x, pos_on_view_y):
+    scale = getFitImageScale(view_width, view_height, im_width, im_height)
+    
     width_margin = (view_width - im_width * scale) / 2
     height_margin = (view_height - im_height * scale) / 2
     
@@ -74,6 +80,7 @@ selectedThemeIndex = 0
 selectedAncor = 'tl'
 ancorHitboxSize = 5
 imgOffset = {}
+imageFitScale = 1.0
 
 boxCount = 0
 boxData = {}
@@ -95,13 +102,15 @@ zoom_mode = True
 
 showingImage = ui.Image.named('showingImage')
 
+isShoeZoomGlass = True
+
 vrt_hitbox = ui.Path
 hlz_hitbox = ui.Path
 
 centerPos = (0,0)
 padding = 6
 
-
+selectedAssetCollection = 'photos.AssetCollection()'
 assets = []
 photoNum = 0
 isEdited = False
@@ -284,7 +293,8 @@ def moveAncor(touch):
     selectedAncorPos_on_photo = getSelectedAncorPos()
         
     global lastScale
-    doZoomGlass(touch.location, selectedAncorPos_on_photo, lastScale)
+    
+    doZoomGlass(touch.location, selectedAncorPos_on_photo, lastScale, selectedAncor)
 
 def getNearestAncor(touch):
     global boxCount
@@ -742,8 +752,17 @@ def initOverlaySystem():
     global v
     global centerPos
     global padding
-    saturationScreen = ui.View(frame=v['Image'].bounds ,flex='WH', name='saturationScreen')
-    brightnessScreen = ui.View(frame=v['Image'].bounds ,flex='WH', name='brightnessScreen')
+    
+    saturationScreen = ui.View(flex='WH', name='saturationScreen')
+    brightnessScreen = ui.View(flex='WH', name='brightnessScreen')
+    
+    saturationScreen.width = v['Image'].width # + 100
+    saturationScreen.height = v['Image'].height # + 100
+    brightnessScreen.width = v['Image'].width # + 100
+    brightnessScreen.height = v['Image'].height # + 100
+    
+    saturationScreen.center = v['Image'].center
+    brightnessScreen.center = v['Image'].center
     
     saturationScreen.background_color = 'white'
     brightnessScreen.background_color = 'black'
@@ -839,8 +858,8 @@ def initZoomGlass():
     global v
     glass = v['glass_image_view']
     
-    cross_v = ui.View(frame=(glass.width/2 - 0.5, 0, 1, glass.height))
-    cross_h = ui.View(frame=(0, glass.height/2 - 0.5, glass.width, 1))
+    cross_v = ui.View(frame=(glass.width/2 - 0.5, 0, 1, glass.height), name='cross_v')
+    cross_h = ui.View(frame=(0, glass.height/2 - 0.5, glass.width, 1), name='cross_h')
     cross_v.background_color, cross_h.background_color = 'red', 'red'
         
     glass.add_subview(cross_v)
@@ -849,45 +868,100 @@ def initZoomGlass():
     glass.x = 0
     glass.y = 0
 
-def doZoomGlass(touchPos, centerPos_on_photo, photoScale): # center
+def doZoomGlass(touchPos, centerPos_on_photo, photoScale, ancorType): # center
+    global isShoeZoomGlass
+    if not isShoeZoomGlass:
+        return
     global v
     global photoNum
     global assets
     global showingImage
+    global imageFitScale
     
     glass = v['glass_image_view']
     
     if glass.x - 50 < touchPos.x < glass.x + glass.width + 50 and glass.y - 50 < touchPos.y < glass.y + glass.height + 50:
         if touchPos[0] > v['touch_panel'].width / 2:
-            glass.x = 0
+            movex = 0
         else:
-            glass.x = v['touch_panel'].width - glass.width
+            movex = v['touch_panel'].width - glass.width
         
         if touchPos[1] > v['touch_panel'].height / 2:
-            glass.y = 0
+            movey = 0
         else:
-            glass.y = v['touch_panel'].height - glass.height
+            movey = v['touch_panel'].height - glass.height
+        
+        def animation():
+            glass.x = movex
+            glass.y = movey
+        
+        ui.animate(animation, 0.1)
     
     
     photo_size = showingImage.size
-    offset_x = glass.width / 2 - centerPos_on_photo.x * photoScale
-    offset_y = glass.height / 2 - centerPos_on_photo.y * photoScale
+    zoomScale = photoScale * imageFitScale * 4
+    if ancorType == 'tm' or ancorType == 'bm':
+        touch_pos_on_view = ui.convert_point(touchPos, v['touch_panel'], v['Image'])
+        touch_pos_on_photo = convertImageViewPos2PhotoPos(
+            v['Image'].width,
+            v['Image'].height,
+            showingImage.size[0],
+            showingImage.size[1],
+            touch_pos_on_view[0],
+            touch_pos_on_view[1]
+        )
+        offset_x = glass.width / 2 - touch_pos_on_photo.x * zoomScale
+    else:
+        offset_x = glass.width / 2 - centerPos_on_photo.x * zoomScale
+    
+    if ancorType == 'ml' or ancorType == 'mr':
+        touch_pos_on_view = ui.convert_point(touchPos, v['touch_panel'], v['Image'])
+        touch_pos_on_photo = convertImageViewPos2PhotoPos(
+            v['Image'].width,
+            v['Image'].height,
+            showingImage.size[0],
+            showingImage.size[1],
+            touch_pos_on_view[0],
+            touch_pos_on_view[1]
+        )
+        offset_y = glass.height / 2 - touch_pos_on_photo.y * zoomScale
+    else:
+        offset_y = glass.height / 2 - centerPos_on_photo.y * zoomScale
     
     # console.hud_alert(str(glass.width / 2 - centerPos_on_photo.x) + str(glass.height / 2 - centerPos_on_photo.y))
     # console.hud_alert(str(centerPos_on_photo.x) + str(centerPos_on_photo.y))
-    with ui.ImageContext(glass.width, glass.height) as ctx:
+    with ui.ImageContext(glass.width, glass.height) as ctx: 
+        ui.set_color('gray')
         ui.fill_rect(0, 0, 200, 200)
-        showingImage.draw(offset_x, offset_y, photo_size[0]*photoScale, photo_size[1]*photoScale)
+        showingImage.draw(offset_x, offset_y, photo_size[0]*zoomScale, photo_size[1]*zoomScale)
         glass.image = ctx.get_image()
         
 def showZoomGlass(touchPos, centerPos_on_photo, photoScale):
+    global selectedAncor
+    ancorType = selectedAncor
+    if not isShoeZoomGlass or ancorType == 'center':
+        return 
     global v
-    doZoomGlass(touchPos, centerPos_on_photo, photoScale)
-    v['glass_image_view'].alpha = 1
+    doZoomGlass(touchPos, centerPos_on_photo, photoScale, selectedAncor)
+    
+    if 'm' in ancorType:
+        if 'l' in ancorType or 'r' in ancorType:
+            v['glass_image_view']['cross_h'].alpha = 0
+        else:
+            v['glass_image_view']['cross_v'].alpha = 0
+    
+    def animation():
+        v['glass_image_view'].alpha = 1
+    ui.animate(animation, 0.15)
     
 def hideZoomGlass():
     global v
-    v['glass_image_view'].alpha = 0
+    def animation():
+        v['glass_image_view'].alpha = 0
+        v['glass_image_view']['cross_h'].alpha = 1
+        v['glass_image_view']['cross_v'].alpha = 1
+        
+    ui.animate(animation, 0.15, 0.3)
 
 ### --------------------------------- ###
 ### Read and Write and Draw Functions ###
@@ -896,7 +970,7 @@ def hideZoomGlass():
 def loadClassesFile():
     global classes
     classes = []
-    with open('result/classes.txt', 'r') as f:
+    with open('classes.txt', 'r') as f:
         classTitles = f.read().split()
     
     colorOffset = random.uniform(0, 360)
@@ -940,7 +1014,7 @@ def saveClassesFile():
     classTitles = []
     for c in classes:
         classTitles.append(c.title)
-    with open('result/classes.txt', 'w') as f:
+    with open('classes.txt', 'w') as f:
         f.write('\n'.join(classTitles))
 
 def loadAnnotationFile():
@@ -1020,6 +1094,7 @@ def openImage():
     global assets
     global centerPos
     global showingImage
+    global imageFitScale
     global v
     
     v['slider_zoom'].value = 0
@@ -1036,6 +1111,13 @@ def openImage():
     updateProgressLabel()
     
     loadAnnotationFile()
+    
+    imageFitScale = getFitImageScale(
+        v['Image'].width,
+        v['Image'].height,
+        showingImage.size[0],
+        showingImage.size[1]
+    )
     
     global isEdited
     isEdited = False
@@ -1070,6 +1152,7 @@ def setPhotoNumByPickAssets(assets):
 
 def openLastEdetedFile():
     global assets
+    global selectedAssetCollection
     global photoNum
     with open('lastedited.json', 'r') as f:
         lastEditing = json.loads(f.read())
@@ -1080,6 +1163,7 @@ def openLastEdetedFile():
         if not LEAlbumID in [a.local_id for a in albums]:
             return False
         albumIndex = [a.local_id for a in albums].index(LEAlbumID)
+        selectedAssetCollection = albums[albumIndex]
         assets = albums[albumIndex].assets
         if config.is_assets_reverse:
             assets.reverse()
@@ -1094,13 +1178,15 @@ def openLastEdetedFile():
 
 def openPhotoBySelectPhoto():
     global assets
+    global selectedAssetCollection
     selectedAlbum = getAlbumWithDialog()
     with open('lastedited.json', 'r') as f:
         lastedited = json.load(f)
         lastedited['albumid'] = selectedAlbum.local_id
     with open('lastedited.json', 'w+') as f:
         json.dump(lastedited, f)
-        
+    
+    selectedAssetCollection = selectedAlbum
     assets = selectedAlbum.assets
     if config.is_assets_reverse:
         assets.reverse()
@@ -1168,6 +1254,10 @@ def onSwitchShowAncorGuid(sender):
     else:
         hideAncorGuid()
 
+def onSwitchIsShowZoomGlass(sender):
+    global isShoeZoomGlass
+    isShoeZoomGlass = sender.value
+
 def onButtonTheme(_):
     global nowThemeNum
     global config
@@ -1183,6 +1273,7 @@ def onBrightnessSlider(sender):
     val = sender.value
     v['Image']['brightnessScreen'].alpha = val
     v.background_color = (1-val, 1-val, 1-val)
+    
 
 def onButtonChangeSelect(_):
     global selectedBoxIndex
@@ -1224,22 +1315,29 @@ def onButtonEditClasses(_):
     prevClasses = [c.title for c in classes]
     
     import edit_classes
-    edit_classes.choose_class_dialog()
+    edit_classes.choose_class_dialog('classes.txt')
     reloadClasses()
     closeMenue()
 
 @ui.in_background  
 def onButtonDelPhoto(_):
     global assets
+    global selectedAssetCollection
     global v
     global photoNum
     
+    #削除完了まで操作不能にする
     tmp = ui.View(name='tmp')
     tmp.width, tmp.height = v['touch_panel'].width, v['touch_panel'].height
     v.add_subview(tmp)
     
     asset = assets[photoNum]
-    photos.batch_delete([asset])
+    delType = dialogs.alert('画像を削除',button1='Delete from Album', button2='Delete from Libraly')
+    
+    if delType == 1:
+        selectedAssetCollection.remove_assets([asset])
+    elif delType == 2:
+        photos.batch_delete([asset])
     
     v.remove_subview(v['tmp'])
     
@@ -1292,6 +1390,8 @@ def awake():
     
     global zoom_mode
     zoom_mode = v['menu_view']['menu']['switch_zoom_mode'].value
+    global isShoeZoomGlass
+    isShoeZoomGlass = v['menu_view']['menu']['switch_is_show_zoom_glass'].value
 
 def start():
     global v
@@ -1330,6 +1430,7 @@ def main():
     global sv
     
     status_bar_height = 20
+    # status_bar_height = 220
     
     v = ui.load_view()
     sv = ui.View(frame=v.bounds, name='superview')

@@ -150,24 +150,59 @@
           "value" : false,
           "name" : "switch_zoom_mode"
         },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{65, 286}, {441, 31}}",
+        "class" : "Label",
+        "attributes" : {
+          "flex" : "WLB",
+          "name" : "switch_zoom_mode_label",
+          "frame" : "{{181, 240}, {150, 32}}",
+          "uuid" : "E14DCAD4-32F9-4ABB-97E0-E955E1132D24",
+          "class" : "Label",
+          "alignment" : "center",
+          "text" : "Zoom Mode",
+          "font_size" : 18,
+          "font_name" : "<System>"
+        },
+        "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{6, 325}, {51, 31}}",
+        "class" : "Switch",
+        "attributes" : {
+          "action" : "onSwitchIsShowZoomGlass",
+          "frame" : "{{231, 241}, {51, 31}}",
+          "value" : true,
+          "class" : "Switch",
+          "name" : "switch_is_show_zoom_glass",
+          "uuid" : "27193D79-C6F3-46E1-B571-57C8B5F2E622"
+        },
         "selected" : true
       },
       {
         "nodes" : [
 
         ],
-        "frame" : "{{65, 286}, {441, 32}}",
+        "frame" : "{{65, 325}, {441, 31}}",
         "class" : "Label",
         "attributes" : {
-          "font_size" : 18,
           "flex" : "WLB",
+          "font_name" : "<System>",
           "frame" : "{{181, 240}, {150, 32}}",
           "uuid" : "E14DCAD4-32F9-4ABB-97E0-E955E1132D24",
           "class" : "Label",
           "alignment" : "center",
-          "text" : "Zoom Mode",
-          "name" : "switch_zoom_mode_label",
-          "font_name" : "<System>"
+          "text" : "Zoom Detail Glass",
+          "name" : "switch_is_show_zoomglass_label",
+          "font_size" : 18
         },
         "selected" : false
       }
@@ -175,6 +210,7 @@
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
+      "name" : "",
       "enabled" : true,
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
 
 import console
-yesOrNo = console.alert('ファイルが存在します。', '上書きしますか？', 'はい', 'いいえ', hide_cancel_button=True)
-console.hud_alert(str(yesOrNo))
+delType = console.alert('画像を削除',button1='Delete from Album', button2='Delete from Libraly')
+print(str(delType))

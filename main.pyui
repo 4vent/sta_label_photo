@@ -304,24 +304,24 @@
               "uuid" : "73DB639D-5CDC-4223-B2B0-F7BFA260334B",
               "class" : "Label",
               "alignment" : "center",
-              "text" : "Vent App",
+              "text" : "sta Label Photo",
               "font_size" : 100,
               "font_name" : "<System-Bold>"
             },
-            "selected" : false
+            "selected" : true
           }
         ],
-        "frame" : "{{520, 520}, {512, 512}}",
+        "frame" : "{{514, 520}, {512, 512}}",
         "class" : "View",
         "attributes" : {
           "flex" : "WH",
           "frame" : "{{206, 206}, {100, 100}}",
-          "background_color" : "RGBA(0.433593,0.805243,0.433593,1.000000)",
+          "background_color" : "RGBA(0.623596,0.781969,0.900749,1.000000)",
           "class" : "View",
           "name" : "curtain",
           "uuid" : "622B69F6-B26D-4582-819C-480C8949B821"
         },
-        "selected" : false
+        "selected" : true
       },
       {
         "nodes" : [
@@ -445,10 +445,10 @@
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-      "enabled" : true,
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "enabled" : true,
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "name" : "",
       "flex" : ""
     },
