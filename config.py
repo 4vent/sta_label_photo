@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 is_assets_reverse = False
+is_large_blank = False
 
 theme_colors = (
     {

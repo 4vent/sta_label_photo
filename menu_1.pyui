@@ -227,6 +227,20 @@
           "font_size" : 15
         },
         "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{0, 48}, {256, 402}}",
+        "class" : "View",
+        "attributes" : {
+          "frame" : "{{206, 206}, {100, 100}}",
+          "class" : "View",
+          "name" : "view1",
+          "uuid" : "E5ED13BB-3A6F-4998-8CC0-4443AD49E34C"
+        },
+        "selected" : false
       }
     ],
     "frame" : "{{0, 0}, {512, 512}}",

@@ -69,6 +69,25 @@ def convertImageViewPos2PhotoPos(view_width, view_height, im_width, im_height, p
     
     return tranceform(x=pos_on_photo_x, y=pos_on_photo_y)
 
+def createTouchShield():
+    global v
+    tmp = ui.View(name='tmp')
+    tmp.alpha = 0
+    tmp.background_color = 'white'
+    tmp.width, tmp.height = v['touch_panel'].width, v['touch_panel'].height
+    v.add_subview(tmp)
+    def anim():
+        v['tmp'].alpha = 0.5
+    ui.animate(anim, 0.3)
+
+def removeTouchShield():
+    global v
+    def anim():
+        v['tmp'].alpha = 0.0
+    def comp():
+        v.remove_subview(v['tmp'])
+    ui.animate(anim, 0.3, 0, comp)
+
 ### ------------- ###
 ### Global Values ###
 ### ------------- ###
@@ -128,6 +147,8 @@ trueLastTouchLocation = (0,0)
 menu_state = False
 nowThemeNum = 0
 
+setting = {}
+
 ### ---------------------------------------- ###
 ### Standalone Tools (but use global values) ###
 ### ---------------------------------------- ###
@@ -179,6 +200,28 @@ def applyThemeColor(index, isSingleContent=False, contentType=None, content=None
             if not view.name.startswith('ancorDot'):
                 continue
             view.background_color = themeColors[index][boxColor] if isSelectedBox else (0,0,0,0)
+
+def loadSetting():
+    global setting
+    with open('setting.json', 'r') as f:
+        setting = json.load(f)
+    
+    global nowThemeNum
+    global isShoeZoomGlass
+    global zoom_mode
+    global v
+    nowThemeNum = setting['theme_color']
+    applyThemeColor(nowThemeNum)
+    isShoeZoomGlass = setting['is_glass_enable']
+    v['menu_view']['menu']['switch_is_show_zoom_glass'].value = isShoeZoomGlass
+    zoom_mode = setting['is_dynamic_zoom_center']
+    v['menu_view']['menu']['switch_zoom_mode'].value = zoom_mode
+    
+def storeSetting(key, val):
+    global setting
+    setting[key] = val
+    with open('setting.json', 'w') as f:
+        json.dump(setting, f, indent=4)
 
 ### ------------------------- ###
 ### Controle Ancore Functions ###
@@ -1258,6 +1301,8 @@ def onSwitchShowAncorGuid(sender):
 def onSwitchIsShowZoomGlass(sender):
     global isShoeZoomGlass
     isShoeZoomGlass = sender.value
+    
+    storeSetting('is_glass_enable', sender.value)
 
 def onButtonTheme(_):
     global nowThemeNum
@@ -1266,6 +1311,7 @@ def onButtonTheme(_):
     if nowThemeNum == len(config.theme_colors):
         nowThemeNum = 0
     applyThemeColor(nowThemeNum)
+    storeSetting('theme_color', nowThemeNum)
 
 def onSaturationSlider(sender):
     v['Image']['saturationScreen'].alpha = sender.value
@@ -1328,25 +1374,43 @@ def onButtonDelPhoto(_):
     global photoNum
     
     #削除完了まで操作不能にする
-    tmp = ui.View(name='tmp')
-    tmp.width, tmp.height = v['touch_panel'].width, v['touch_panel'].height
-    v.add_subview(tmp)
+    createTouchShield()
     
     asset = assets[photoNum]
-    delType = dialogs.alert('画像を削除',button1='Delete from Album', button2='Delete from Libraly')
+    try:
+        delType = dialogs.alert('画像を削除',button1='アルバムから削除', button2='端末から削除')
+    except KeyboardInterrupt:
+        delType = None
     
     if delType == 1:
         selectedAssetCollection.remove_assets([asset])
     elif delType == 2:
         photos.batch_delete([asset])
     
-    v.remove_subview(v['tmp'])
+    removeTouchShield()
     
-    openNextImage()
-    openLastEdetedFile()
+    if not delType == None:
+        openNextImage()
+        openLastEdetedFile()
+    
+    closeMenue()
+
+def onButtonShare(_):
+    global assets
+    global photoNum
     
     closeMenue()
     
+    createTouchShield()
+    
+    tmpFilename = str(ObjCInstance(assets[photoNum]).filename())
+    with open(tmpFilename, 'wb') as f:
+        f.write(assets[photoNum].get_image_data().getvalue())
+    console.open_in(tmpFilename)
+    os.remove(tmpFilename)
+    
+    removeTouchShield()
+
 def onButtonMenu(_):
     global menu_state
     if menu_state:
@@ -1357,6 +1421,7 @@ def onButtonMenu(_):
 def onSwitchZoomModw(sender):
     global zoom_mode
     zoom_mode = sender.value
+    storeSetting('is_dynamic_zoom_center', sender.value)
     
     
 def onButtonExit(_):
@@ -1426,11 +1491,13 @@ def start():
     
     initZoomGlass()
     
+    loadSetting()
+    
 def main():
     global v
     global sv
     
-    status_bar_height = 20
+    status_bar_height = 220 if config.is_large_blank else 20
     # status_bar_height = 220
     
     v = ui.load_view()
