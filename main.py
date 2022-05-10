@@ -98,12 +98,12 @@ def fixBoxPosTool():
     photo = assets[photoNum]
     
     imageViewVerticalRatio = float(v['Image'].height) / v['Image'].width
-    photoVerticalRatio = math.floor(photo.pixel_height / photo.pixel_width)
+    photoVerticalRatio = float(photo.pixel_height) / photo.pixel_width
     
     if imageViewVerticalRatio > photoVerticalRatio:
-        force = 'LRFit'
-    else:
         force = 'TBFit'
+    else:
+        force = 'LRFit'
         
     faildPhotoData = getPhotoPosAndScale(force)
     collectPhotoData = getPhotoPosAndScale()
@@ -112,10 +112,10 @@ def fixBoxPosTool():
         box = v['Image']['rangeBox' + str(i)]
         
         faildYoloPos = boxPos2YoloPos(
-            faildPhotoData['x'],
-            faildPhotoData['y'],
-            faildPhotoData['width'],
-            faildPhotoData['height'],
+            collectPhotoData['x'],
+            collectPhotoData['y'],
+            collectPhotoData['width'],
+            collectPhotoData['height'],
             box.center[0],
             box.center[1],
             box.width,
@@ -123,10 +123,10 @@ def fixBoxPosTool():
         )
         
         collectPos = yoloPos2BoxPos(
-            collectPhotoData['x'],
-            collectPhotoData['y'],
-            collectPhotoData['width'],
-            collectPhotoData['height'],
+            faildPhotoData['x'],
+            faildPhotoData['y'],
+            faildPhotoData['width'],
+            faildPhotoData['height'],
             faildYoloPos['x'],
             faildYoloPos['y'],
             faildYoloPos['width'],
@@ -734,17 +734,19 @@ def zoomWithDoubletouch(touch):
 
 def getPinchCenterPos():
     global activeTouchIDs
+    touchIDList = list(dict(activeTouchIDs).values())
     center = (
-        (dict(activeTouchIDs).values()[0][0] + dict(activeTouchIDs).values()[1][0]) / 2,
-        (dict(activeTouchIDs).values()[0][1] + dict(activeTouchIDs).values()[1][1]) / 2
+        (touchIDList[0][0] + touchIDList[1][0]) / 2,
+        (touchIDList[0][1] + touchIDList[1][1]) / 2
     )
     return center
 
 def getPinchDistance():
     global activeTouchIDs
+    touchIDList = list(dict(activeTouchIDs).values())
     distance = math.sqrt(
-        (dict(activeTouchIDs).values()[0][0] - dict(activeTouchIDs).values()[1][0]) ** 2 +
-        (dict(activeTouchIDs).values()[0][1] - dict(activeTouchIDs).values()[1][1]) ** 2
+        (touchIDList[0][0] - touchIDList[1][0]) ** 2 +
+        (touchIDList[0][1] - touchIDList[1][1]) ** 2
     )
     return distance
 
@@ -784,7 +786,7 @@ def updateProgressLabel():
 ### Create Yolo Annotation File Functions ###
 ### ------------------------------------- ###
 
-def getPhotoPosAndScale(force=None):
+def getPhotoPosAndScale(force=None, BugFixMode=False):
     global photoNum
     global assets
     global v
@@ -792,6 +794,9 @@ def getPhotoPosAndScale(force=None):
     
     imageViewVerticalRatio = float(v['Image'].height) / v['Image'].width
     photoVerticalRatio = float(photo.pixel_height) / photo.pixel_width
+    
+    if BugFixMode:
+        imageViewVerticalRatio = math.floor(imageViewVerticalRatio)
     
     if (force == None and imageViewVerticalRatio > photoVerticalRatio) or force=='LRFit': # 上下余白の場合
         #dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nL-R-Fit'.format(photo.pixel_height, photo.pixel_width, float(photo.pixel_width)/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
@@ -1120,7 +1125,7 @@ def saveClassesFile():
     with open('classes.txt', 'w') as f:
         f.write('\n'.join(classTitles))
 
-def loadAnnotationFile():
+def loadAnnotationFile(BugFixMode=False):
     global assets
     global photoNum
     
@@ -1132,7 +1137,7 @@ def loadAnnotationFile():
     if not os.path.exists('result/' + annotationFileName):
         return
     
-    photoInImageView = getPhotoPosAndScale()
+    photoInImageView = getPhotoPosAndScale(BugFixMode=BugFixMode)
     lines = []
     with open('result/' + annotationFileName)  as f:
         lines = f.readlines()
@@ -1192,7 +1197,7 @@ def saveAnnotation(isNotice = False):
     with open('result/' + annotationFileName, 'w') as f:
         f.write(yoloAnotationText)
 
-def openImage():
+def openImage(BugFixMode=False):
     global photoNum
     global assets
     global centerPos
@@ -1213,7 +1218,7 @@ def openImage():
         json.dump(lastedited, f)
     updateProgressLabel()
     
-    loadAnnotationFile()
+    loadAnnotationFile(BugFixMode=BugFixMode)
     
     imageFitScale = getFitImageScale(
         v['Image'].width,
@@ -1523,7 +1528,10 @@ def onButtonTest(_):
     pass
 
 def onButtonBugFix(_):
-    fixBoxPosTool()
+    #fixBoxPosTool()
+    openImage(BugFixMode=True)
+    global isEdited
+    isEdited = True
 
 ### ---------------------- ###
 ### |\   /|   /\   | |\  | ###

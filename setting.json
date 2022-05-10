@@ -1,6 +1,6 @@
 {
     "theme_color": 2,
-    "is_dynamic_zoom_center": false,
     "is_glass_enable": true,
-    "is_header_blank_big": true
+    "is_dynamic_zoom_center": false,
+    "is_header_blank_big": false
 }
