@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # test commit from working copy
 
+# aaa
+
 import ui
 import photos
 import dialogs
