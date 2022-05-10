@@ -8,14 +8,14 @@
         "frame" : "{{0, 0}, {512, 512}}",
         "class" : "ImageView",
         "attributes" : {
-          "custom_attributes" : "",
-          "frame" : "{{206, 206}, {100, 100}}",
           "flex" : "WH",
+          "frame" : "{{206, 206}, {100, 100}}",
+          "custom_attributes" : "",
           "class" : "ImageView",
-          "name" : "Image",
-          "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB"
+          "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB",
+          "name" : "Image"
         },
-        "selected" : false
+        "selected" : true
       },
       {
         "nodes" : [
@@ -252,7 +252,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{62, 20}, {104, 34}}",
+        "frame" : "{{6, 20}, {160, 34}}",
         "class" : "Slider",
         "attributes" : {
           "action" : "onSaturationSlider",
@@ -321,7 +321,7 @@
           "name" : "curtain",
           "uuid" : "622B69F6-B26D-4582-819C-480C8949B821"
         },
-        "selected" : true
+        "selected" : false
       },
       {
         "nodes" : [
@@ -342,28 +342,6 @@
           "class" : "Button",
           "image_name" : "iob:pricetag_32",
           "flex" : "RT"
-        },
-        "selected" : false
-      },
-      {
-        "nodes" : [
-
-        ],
-        "frame" : "{{6, 6}, {48, 48}}",
-        "class" : "Button",
-        "attributes" : {
-          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
-          "name" : "button_exit",
-          "font_size" : 15,
-          "corner_radius" : 16,
-          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
-          "frame" : "{{216, 240}, {80, 32}}",
-          "border_width" : 0,
-          "title" : "",
-          "action" : "onButtonExit",
-          "class" : "Button",
-          "image_name" : "iob:close_round_32",
-          "flex" : "RB"
         },
         "selected" : false
       },
@@ -445,11 +423,11 @@
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
-      "enabled" : true,
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "enabled" : true,
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "name" : "",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false

@@ -68,3 +68,5 @@ def makeYoloAnotationLine(labelIndex, photo, boxView):
         
     
     return '{} {:.6f} {:.6f} {:.6f} {:.6f}'.format(labelIndex, yoloLine["x"], yoloLine["y"], yoloLine["width"], yoloLine["height"])
+
+def fix

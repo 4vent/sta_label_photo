@@ -93,6 +93,7 @@ def removeTouchShield():
 ### ------------- ###
 
 v = ui.View()
+sv = ui.View()
 
 is2PColor = False
 selectedThemeIndex = 0
@@ -148,6 +149,9 @@ menu_state = False
 nowThemeNum = 0
 
 setting = {}
+
+HEADER_HEIGHT_NORMAL = 20
+HEADER_HEIGHT_LONG = 220
 
 ### ---------------------------------------- ###
 ### Standalone Tools (but use global values) ###
@@ -210,10 +214,13 @@ def loadSetting():
     global isShoeZoomGlass
     global zoom_mode
     global v
+    
     nowThemeNum = setting['theme_color']
     applyThemeColor(nowThemeNum)
+    
     isShoeZoomGlass = setting['is_glass_enable']
     v['menu_view']['menu']['switch_is_show_zoom_glass'].value = isShoeZoomGlass
+    
     zoom_mode = setting['is_dynamic_zoom_center']
     v['menu_view']['menu']['switch_zoom_mode'].value = zoom_mode
     
@@ -731,12 +738,14 @@ def updateProgressLabel():
 def getPhotoPosAndScale():
     global photoNum
     global assets
+    global v
     photo = assets[photoNum]
     
     imageViewVerticalRatio = v['Image'].height / v['Image'].width
-    photoVerticalRatio = photo.pixel_height / photo.pixel_width
+    photoVerticalRatio = float(photo.pixel_height) / photo.pixel_width
     
     if imageViewVerticalRatio > photoVerticalRatio: # 上下余白の場合
+        dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nL-R-Fit'.format(photo.pixel_height, photo.pixel_width, float(photo.pixel_width)/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
         mag = v['Image'].width / photo.pixel_width # 倍率
         return {
             'x': 0,
@@ -745,6 +754,7 @@ def getPhotoPosAndScale():
             'height': photo.pixel_height * mag
         }
     else:                                           # 左右余白の場合
+        dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nT-B-Fit'.format(photo.pixel_height, photo.pixel_width, photo.pixel_width/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
         mag = v['Image'].height / photo.pixel_height # 倍率
         return {
             'y': 0,
@@ -1028,7 +1038,7 @@ def loadClassesFile():
             color.b + (1-color.b) * light,
             )
         classes.append(labelClass(c, color, textcolor))
-        colorOffset += 80
+        colorOffset += 160
         if not colorOffset < 360:
             colorOffset -= 360
 
@@ -1237,6 +1247,33 @@ def openPhotoBySelectPhoto():
     setPhotoNumByPickAssets(assets)
     openImage()
 
+### ------------------ ###
+### Super View Control ###
+### ------------------ ###
+
+def setHeaderBlankHeight(is_header_blank_big, isEarlyAppProcess=False):
+    global v
+    global sv
+    storeSetting('is_header_blank_big', is_header_blank_big)
+    
+    if is_header_blank_big:
+        status_bar_height = HEADER_HEIGHT_LONG 
+    else:
+        status_bar_height = HEADER_HEIGHT_NORMAL
+    v.y = status_bar_height
+    v.height = sv.height - status_bar_height
+    
+    if isEarlyAppProcess:
+        return
+    
+    global centerPos
+    global initialImageScale
+    centerPos = v['touch_panel'].center
+    v['guidBox'].center = centerPos
+    initialImageScale = [v['touch_panel'].height, v['touch_panel'].width]
+    global lastScale
+    imageZoom(centerPos, lastScale, disableUpdateSlider=False)
+
 ### ---------------- ###
 ### on ~~~ Functions ###
 ### ---------------- ###
@@ -1422,8 +1459,12 @@ def onSwitchZoomModw(sender):
     global zoom_mode
     zoom_mode = sender.value
     storeSetting('is_dynamic_zoom_center', sender.value)
-    
-    
+
+def onButtonSwitchTopBlankHeight(_):
+    global setting
+    ihbb = setting['is_header_blank_big']
+    setHeaderBlankHeight(not ihbb)
+
 def onButtonExit(_):
     saveAnnotation()
     global s
@@ -1437,6 +1478,9 @@ def onButtonTest(_):
 ### | \ / |  /  \  | | \ | ###
 ### |  V  | /----\ | |  \| ###
 ### ---------------------- ###
+
+def superViewPrepairing():
+    pass
 
 @on_main_thread
 def awake():
@@ -1496,15 +1540,14 @@ def start():
 def main():
     global v
     global sv
-    
-    status_bar_height = 220 if config.is_large_blank else 20
-    # status_bar_height = 220
+    global setting
+    with open('setting.json', 'r') as f:
+        setting = json.load(f)
     
     v = ui.load_view()
     sv = ui.View(frame=v.bounds, name='superview')
+    setHeaderBlankHeight(setting['is_header_blank_big'], True)
     
-    v.y = status_bar_height
-    v.height -= status_bar_height
     v.flex = 'WH'
     sv.add_subview(v)
     awake()
