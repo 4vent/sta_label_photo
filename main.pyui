@@ -8,14 +8,14 @@
         "frame" : "{{0, 0}, {512, 512}}",
         "class" : "ImageView",
         "attributes" : {
-          "flex" : "WH",
+          "name" : "Image",
           "frame" : "{{206, 206}, {100, 100}}",
+          "flex" : "WH",
           "custom_attributes" : "",
           "class" : "ImageView",
-          "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB",
-          "name" : "Image"
+          "uuid" : "48A42CB2-D4EA-4628-88CB-A7179AB6BBBB"
         },
-        "selected" : true
+        "selected" : false
       },
       {
         "nodes" : [
@@ -418,16 +418,38 @@
           "uuid" : "E7D930CA-0E8F-4F80-BEEA-0210A5035122"
         },
         "selected" : false
+      },
+      {
+        "nodes" : [
+
+        ],
+        "frame" : "{{418, 102}, {48, 48}}",
+        "class" : "Button",
+        "attributes" : {
+          "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
+          "name" : "button_fix",
+          "font_size" : 15,
+          "corner_radius" : 16,
+          "background_color" : "RGBA(0.933962,0.933962,0.933962,1.000000)",
+          "frame" : "{{216, 240}, {80, 32}}",
+          "border_width" : 0,
+          "title" : "",
+          "action" : "onButtonBugFix",
+          "class" : "Button",
+          "image_name" : "iob:wrench_32",
+          "flex" : "LB"
+        },
+        "selected" : true
       }
     ],
     "frame" : "{{0, 0}, {512, 512}}",
     "class" : "View",
     "attributes" : {
-      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
-      "enabled" : true,
-      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "name" : "",
+      "enabled" : true,
       "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
+      "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
+      "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false

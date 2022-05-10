@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-# test commit from working copy
-
-# aaa
 
 import ui
 import photos
@@ -89,6 +86,56 @@ def removeTouchShield():
     def comp():
         v.remove_subview(v['tmp'])
     ui.animate(anim, 0.3, 0, comp)
+    
+def fixBoxPosTool():
+    global v
+    global boxCount
+    global assets
+    global photoNum
+    global isEdited
+    
+    isEdited = True
+    photo = assets[photoNum]
+    
+    imageViewVerticalRatio = float(v['Image'].height) / v['Image'].width
+    photoVerticalRatio = math.floor(photo.pixel_height / photo.pixel_width)
+    
+    if imageViewVerticalRatio > photoVerticalRatio:
+        force = 'LRFit'
+    else:
+        force = 'TBFit'
+        
+    faildPhotoData = getPhotoPosAndScale(force)
+    collectPhotoData = getPhotoPosAndScale()
+    
+    for i in range(boxCount):
+        box = v['Image']['rangeBox' + str(i)]
+        
+        faildYoloPos = boxPos2YoloPos(
+            faildPhotoData['x'],
+            faildPhotoData['y'],
+            faildPhotoData['width'],
+            faildPhotoData['height'],
+            box.center[0],
+            box.center[1],
+            box.width,
+            box.height
+        )
+        
+        collectPos = yoloPos2BoxPos(
+            collectPhotoData['x'],
+            collectPhotoData['y'],
+            collectPhotoData['width'],
+            collectPhotoData['height'],
+            faildYoloPos['x'],
+            faildYoloPos['y'],
+            faildYoloPos['width'],
+            faildYoloPos['height']
+        )
+        
+        box.center = (collectPos['x'], collectPos['y'])
+        box.width = collectPos['width']
+        box.height = collectPos['height']
 
 ### ------------- ###
 ### Global Values ###
@@ -737,17 +784,17 @@ def updateProgressLabel():
 ### Create Yolo Annotation File Functions ###
 ### ------------------------------------- ###
 
-def getPhotoPosAndScale():
+def getPhotoPosAndScale(force=None):
     global photoNum
     global assets
     global v
     photo = assets[photoNum]
     
-    imageViewVerticalRatio = v['Image'].height / v['Image'].width
+    imageViewVerticalRatio = float(v['Image'].height) / v['Image'].width
     photoVerticalRatio = float(photo.pixel_height) / photo.pixel_width
     
-    if imageViewVerticalRatio > photoVerticalRatio: # 上下余白の場合
-        dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nL-R-Fit'.format(photo.pixel_height, photo.pixel_width, float(photo.pixel_width)/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
+    if (force == None and imageViewVerticalRatio > photoVerticalRatio) or force=='LRFit': # 上下余白の場合
+        #dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nL-R-Fit'.format(photo.pixel_height, photo.pixel_width, float(photo.pixel_width)/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
         mag = v['Image'].width / photo.pixel_width # 倍率
         return {
             'x': 0,
@@ -756,7 +803,7 @@ def getPhotoPosAndScale():
             'height': photo.pixel_height * mag
         }
     else:                                           # 左右余白の場合
-        dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nT-B-Fit'.format(photo.pixel_height, photo.pixel_width, photo.pixel_width/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
+        #dialogs.alert('','photo: {}x{}(1:{:.2f})\nview:{:.2f}x{:.2f}(1:{:.2f})\nT-B-Fit'.format(photo.pixel_height, photo.pixel_width, photo.pixel_width/photo.pixel_height, v["Image"].height, v["Image"].width, v["Image"].width/v["Image"].height),'ok')
         mag = v['Image'].height / photo.pixel_height # 倍率
         return {
             'y': 0,
@@ -1474,6 +1521,9 @@ def onButtonExit(_):
     
 def onButtonTest(_):
     pass
+
+def onButtonBugFix(_):
+    fixBoxPosTool()
 
 ### ---------------------- ###
 ### |\   /|   /\   | |\  | ###
