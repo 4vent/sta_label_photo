@@ -199,14 +199,14 @@
         "class" : "Label",
         "attributes" : {
           "flex" : "WB",
-          "font_size" : 18,
+          "name" : "holizontal_slide_bar_view",
           "frame" : "{{181, 240}, {150, 32}}",
           "uuid" : "88BD581D-EEB2-4370-9A7A-F90EAC88BEBD",
           "class" : "Label",
           "alignment" : "left",
           "text" : "Label",
           "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-          "name" : "holizontal_slide_bar_view",
+          "font_size" : 18,
           "font_name" : "<System>"
         },
         "selected" : false
@@ -219,14 +219,14 @@
         "class" : "Label",
         "attributes" : {
           "flex" : "HL",
-          "name" : "vertical_slide_bar_view",
+          "font_size" : 18,
           "frame" : "{{181, 240}, {150, 32}}",
           "uuid" : "4A1EF183-BF38-4F32-8547-6216C0303181",
           "class" : "Label",
           "alignment" : "left",
           "text" : "Label",
           "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
-          "font_size" : 18,
+          "name" : "vertical_slide_bar_view",
           "font_name" : "<System>"
         },
         "selected" : false
@@ -246,7 +246,7 @@
           "value" : 0,
           "name" : "brightness_slider"
         },
-        "selected" : false
+        "selected" : true
       },
       {
         "nodes" : [
@@ -423,7 +423,7 @@
         "nodes" : [
 
         ],
-        "frame" : "{{418, 102}, {48, 48}}",
+        "frame" : "{{458, -56}, {48, 48}}",
         "class" : "Button",
         "attributes" : {
           "uuid" : "0C1E11F6-A8CD-4770-86F1-AAFA7CA13817",
@@ -439,7 +439,7 @@
           "image_name" : "iob:wrench_32",
           "flex" : "LB"
         },
-        "selected" : true
+        "selected" : false
       }
     ],
     "frame" : "{{0, 0}, {512, 512}}",
@@ -447,9 +447,9 @@
     "attributes" : {
       "name" : "",
       "enabled" : true,
-      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "tint_color" : "RGBA(0.000000,0.478000,1.000000,1.000000)",
       "border_color" : "RGBA(0.000000,0.000000,0.000000,1.000000)",
+      "background_color" : "RGBA(1.000000,1.000000,1.000000,1.000000)",
       "flex" : ""
     },
     "selected" : false
